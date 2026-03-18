@@ -1,0 +1,37 @@
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class AuthService {
+  api = 'http://localhost:5063/api/Auth';
+
+  constructor(private http: HttpClient, private router: Router) {}
+
+  login(data: any) {
+    return this.http.post(`${this.api}/login`, data);
+  }
+
+  register(data: any) {
+    return this.http.post(`${this.api}/register`, data);
+  }
+
+  saveToken(token: string) {
+    localStorage.setItem('token', token);
+  }
+
+  getToken() {
+    return localStorage.getItem('token');
+  }
+
+  logout() {
+    localStorage.removeItem('token');
+    this.router.navigate(['/login']);
+  }
+
+  isLoggedIn() {
+    return !!localStorage.getItem('token');
+  }
+}
